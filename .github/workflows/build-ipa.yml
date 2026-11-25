@@ -1,0 +1,58 @@
+name: Build IPA
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main, master]
+
+jobs:
+  build:
+    runs-on: macos-latest
+    timeout-minutes: 40
+    steps:
+      - name: Ambil kode
+        uses: actions/checkout@v4
+
+      - name: Versi Xcode
+        run: xcodebuild -version
+
+      - name: Pasang XcodeGen
+        run: brew install xcodegen
+
+      - name: Buat proyek Xcode
+        run: xcodegen generate
+
+      - name: Kompilasi (tanpa tanda tangan)
+        run: |
+          set -o pipefail
+          xcodebuild \
+            -project Kasir.xcodeproj \
+            -scheme Kasir \
+            -configuration Release \
+            -sdk iphoneos \
+            -destination 'generic/platform=iOS' \
+            -derivedDataPath build \
+            CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY="" \
+            build 2>&1 | tee build.log
+
+      - name: Kemas menjadi IPA
+        run: |
+          APP=$(find build/Build/Products -maxdepth 3 -name "Kasir.app" | head -n 1)
+          echo "Aplikasi: $APP"
+          mkdir -p Payload
+          cp -R "$APP" Payload/
+          zip -qr Kasir-tanpa-tanda-tangan.ipa Payload
+          ls -la Kasir-tanpa-tanda-tangan.ipa
+
+      - name: Simpan IPA
+        uses: actions/upload-artifact@v4
+        with:
+          name: Kasir-IPA
+          path: Kasir-tanpa-tanda-tangan.ipa
+
+      - name: Simpan log bila gagal
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-log
+          path: build.log
