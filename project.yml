@@ -1,0 +1,49 @@
+# Proyek dibuat dengan XcodeGen (https://github.com/yonaskolb/XcodeGen).
+# File Kasir.xcodeproj dibuat otomatis dari berkas ini: `xcodegen generate`.
+name: Kasir
+options:
+  bundleIdPrefix: id.kasirpribadi
+  deploymentTarget:
+    iOS: "16.0"
+  createIntermediateGroups: true
+settings:
+  base:
+    SWIFT_VERSION: "5.0"
+    MARKETING_VERSION: "1.0.0"
+    CURRENT_PROJECT_VERSION: "1"
+targets:
+  Kasir:
+    type: application
+    platform: iOS
+    sources:
+      - path: Kasir
+    info:
+      path: Support/Info.plist
+      properties:
+        CFBundleDisplayName: Kasir
+        CFBundleShortVersionString: "$(MARKETING_VERSION)"
+        CFBundleVersion: "$(CURRENT_PROJECT_VERSION)"
+        LSRequiresIPhoneOS: true
+        UILaunchScreen:
+          UIColorName: LaunchBackground
+        UIApplicationSceneManifest:
+          UIApplicationSupportsMultipleScenes: false
+        UISupportedInterfaceOrientations:
+          - UIInterfaceOrientationPortrait
+        UISupportedInterfaceOrientations~ipad:
+          - UIInterfaceOrientationPortrait
+          - UIInterfaceOrientationPortraitUpsideDown
+          - UIInterfaceOrientationLandscapeLeft
+          - UIInterfaceOrientationLandscapeRight
+        NSFaceIDUsageDescription: "Face ID dipakai untuk membuka kunci aplikasi kasir."
+        NSLocalNetworkUsageDescription: "Aplikasi terhubung ke server kasir di jaringan Anda."
+        ITSAppUsesNonExemptEncryption: false
+        NSAppTransportSecurity:
+          NSAllowsLocalNetworking: true
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: id.kasirpribadi.kasir
+        PRODUCT_NAME: Kasir
+        TARGETED_DEVICE_FAMILY: "1,2"
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME: AccentColor
